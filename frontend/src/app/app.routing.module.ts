@@ -1,6 +1,6 @@
 
-import {NgModule} from "@angular/core";
-import {RouterModule, Routes} from "@angular/router";
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from "./components/home/home.component";
 import {CartComponent} from "./components/cart/cart.component";
 import {CheckoutComponent} from "./components/checkout/checkout.component";
@@ -10,19 +10,19 @@ import { ArticuloComponent } from './components/articulo/articulo.component';
 
 const routes: Routes = [
   {
-    path:"", component: HomeComponent
+    path: '', component: HomeComponent
   },
   {
-    path:"articulo/:id_articulo",component:ArticuloComponent
+    path: 'articulo/id_producto', component: ArticuloComponent
   },
   {
-    path: "cart", component:CartComponent
+    path: 'cart', component: CartComponent
   },
   {
-    path:"checkout",component:CheckoutComponent
+    path: 'checkout', component: CheckoutComponent
   },
   {
-    path:"thankyou",component:ThankyouComponent
+    path: 'thankyou', component: ThankyouComponent
   }
 ];
 
