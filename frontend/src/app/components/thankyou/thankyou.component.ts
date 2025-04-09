@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-thankyou',
-  imports: [],
+  standalone:true,
   templateUrl: './thankyou.component.html',
   styleUrl: './thankyou.component.scss'
 })
