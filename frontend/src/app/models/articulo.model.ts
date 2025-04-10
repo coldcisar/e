@@ -1,17 +1,17 @@
 
 export interface ArticuloModelServer {
-    id_producto: Number;
-    nombre_producto: String;
-    tipo_producto: String;
-    descripcion: String;
-    imagen: String;
-    precio: Number;
-    cantidad: Number;
+    id_producto: number;
+    nombre_producto: string;
+    tipo_producto: string;
+    descripcion: string;
+    imagen: string;
+    precio: number;
+    cantidad: number;
   }
   
   
   export interface serverResponse  {
     count: number;
-    products: ArticuloModelServer[]
+    articulo: ArticuloModelServer[]
   };
   

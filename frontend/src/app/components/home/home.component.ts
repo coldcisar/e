@@ -1,8 +1,8 @@
 
 import {Component, OnInit} from '@angular/core';
-import {ProductService} from "../../services/product.service";
-import {ProductModelServer, serverResponse} from "../../models/product.model";
-import {CartService} from "../../services/cart.service";
+import {ArticuloService} from "../../services/articulo.service";
+import {ArticuloModelServer, serverResponse} from "../../models/articulo.model";
+import { CartService } from '../../services/cart.service';
 import {Router} from "@angular/router";
 
 @Component({
@@ -13,25 +13,25 @@ import {Router} from "@angular/router";
 
 
 export class HomeComponent implements OnInit {
-  products: ProductModelServer[] = [];
+  articulos: ArticuloModelServer[] = [];
 
-  constructor(private productService: ProductService,
+  constructor(private articuloService: ArticuloService,
               private cartService: CartService,
               private router:Router) {
   }
 
   ngOnInit() {
-    this.productService.getAllProducts(8).subscribe((prods: serverResponse ) => {
-      this.products = prods.products;
-      console.log(this.products);
+    this.articuloService.getAllProducts(8).subscribe((arts: serverResponse ) => {
+      this.articulos = arts.articulo;
+      console.log(this.articulos);
     });
   }
 
-  AddProduct(id: Number) {
-    this.cartService.AddProductToCart(id);
+  AddProduct(id_producto: number) {
+    this.cartService.AddProductToCart(id_producto);
   }
 
-  selectProduct(id: Number) {
-    this.router.navigate(['/product', id]).then();
+  selectProduct(id_producto: Number) {
+    this.router.navigate(['/articulo', id_producto]).then();
   }
 }

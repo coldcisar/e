@@ -1,18 +1,18 @@
 
-import {ProductModelServer} from "./product.model";
+import {ArticuloModelServer} from "./articulo.model";
 
 export interface CartModelServer {
-  total: Number;
-  data: [{
-    product: ProductModelServer,
-    numInCart: Number
-  }];
+  total: number;
+  data: {
+    articulo?: ArticuloModelServer,
+    numInCart: number
+  }[];
 }
 
 export interface CartModelPublic {
-  total: Number;
-  prodData: [{
-    id: Number,
-    incart: Number
-  }]
+  total: number;
+    ArtData: {
+    id_producto: number,
+    incart: number
+  }[];
 }
