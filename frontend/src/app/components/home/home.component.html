@@ -68,29 +68,29 @@
         </div>
         <!-- /section title -->
   
-        <!-- Products tab & slick 
+        
         <div class="col-md-12">
           <div class="row">
-            <div class="col-md-4 col-sm-6" *ngFor="let p of products">
+            <div class="col-md-4 col-sm-6" *ngFor="let a of articulos">
               <div class="card my-2">
-                <img [src]="a.imagen" alt="{{a.nombre_producto}}" width="200px" class="card-img-top" (click)="selectProduct(p.id)" style="cursor:pointer;">
+                <img [src]="a.imagen" alt="{{a.nombre_producto}}" width="200px" class="card-img-top" (click)="selectProduct(a.id_producto)" style="cursor:pointer;">
                 <div class="card-header">
                   <div class="card-title">
-                    <p>{{p.name | titlecase}}</p>
+                    <p>{{a.nombre_producto | titlecase}}</p>
                   </div>
                 </div>
                 <div class="card-body">
-                  <h6>{{p.description.substr(0, 40)}} ....</h6>
-                  <p class="lead">{{p.price | currency:'USD'}}</p>
+                  <h6>{{a.descripcion.substr(0, 40)}} ....</h6>
+                  <p class="lead">{{a.precio | currency:'CLP'}}</p>
                 </div>
   
                 <div class="row d-flex justify-content-center border-primary my-3">
                   <div class="col-md-6 ">
                     <button class="btn btn-outline-primary btn-sm btn-block"
-                            [class.disabled]="p.quantity < 1"
-                            [class.btn-outline-danger]="p.quantity < 1"
-                            (click)="AddProduct(p.id)" [disabled]="p.quantity < 1">
-                      {{ p.quantity < 1 ? "NO STOCK" : "Add To Cart"}}
+                            [class.disabled]="a.cantidad < 1"
+                            [class.btn-outline-danger]="a.cantidad < 1"
+                            (click)="AddArticulo(a.id_producto)" [disabled]="a.cantidad < 1">
+                      {{ a.cantidad < 1 ? "NO STOCK" : "Add To Cart"}}
                     </button>
                   </div>
                 </div>
@@ -102,7 +102,7 @@
           </div>
   
         </div>
-    -->
+  
         
       </div>
     </div>
