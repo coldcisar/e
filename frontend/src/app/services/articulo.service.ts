@@ -22,11 +22,11 @@ export class ArticuloService {
     });
   }
 
-  getSingleProduct(id_producto: Number): Observable<ArticuloModelServer> {
+  getSingleProduct(id_producto: number): Observable<ArticuloModelServer> {
     return this.http.get<ArticuloModelServer>(this.url + 'articulos/' + id_producto);
   }
 
-  getProductsFromCategory(nombre_categoria: String): Observable<ArticuloModelServer[]> {
+  getProductsFromCategory(nombre_categoria: string): Observable<ArticuloModelServer[]> {
     return this.http.get<ArticuloModelServer[]>(this.url + 'articulos/categoria/' + nombre_categoria);
   }
 

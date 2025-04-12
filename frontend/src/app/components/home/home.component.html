@@ -9,10 +9,10 @@
         <div class="col-md-4 col-xs-6">
           <div class="shop">
             <div class="shop-img">
-              <img src="./../../../assets/img/shop01.png" alt="">
+              <img src="./../../../assets/img/shop01.jpg" alt="">
             </div>
             <div class="shop-body">
-              <h3>Laptop<br>Collection</h3>
+              <h3>Figuras<br>Collection</h3>
               <a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
             </div>
           </div>
@@ -23,10 +23,10 @@
         <div class="col-md-4 col-xs-6">
           <div class="shop">
             <div class="shop-img">
-              <img src="./../../../assets/img/shop03.png" alt="">
+              <img src="./../../../assets/img/images.jpg" alt="">
             </div>
             <div class="shop-body">
-              <h3>Accessories<br>Collection</h3>
+              <h3>Mangas<br>Collection</h3>
               <a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
             </div>
           </div>
@@ -80,7 +80,7 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <h6>{{a.descripcion.substr(0, 40)}} ....</h6>
+                  <h6>{{a.descripcion.substr(0, 60)}} ....</h6>
                   <p class="lead">{{a.precio | currency:'CLP'}}</p>
                 </div>
   
@@ -89,7 +89,7 @@
                     <button class="btn btn-outline-primary btn-sm btn-block"
                             [class.disabled]="a.cantidad < 1"
                             [class.btn-outline-danger]="a.cantidad < 1"
-                            (click)="AddArticulo(a.id_producto)" [disabled]="a.cantidad < 1">
+                            (click)="AddProduct(a.id_producto)" [disabled]="a.cantidad < 1">
                       {{ a.cantidad < 1 ? "NO STOCK" : "Add To Cart"}}
                     </button>
                   </div>

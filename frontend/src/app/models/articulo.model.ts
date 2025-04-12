@@ -7,11 +7,12 @@ export interface ArticuloModelServer {
     imagen: string;
     precio: number;
     cantidad: number;
+    categoria:number;
   }
   
   
   export interface serverResponse  {
     count: number;
-    articulo: ArticuloModelServer[]
+    articulos: ArticuloModelServer[]
   };
   

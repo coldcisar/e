@@ -26,6 +26,7 @@ router.get('/', function(req, res) {
           'a.id_producto',
           'a.tipo_producto as categoria',
           'a.nombre_producto',
+          'a.descripcion',
           'a.imagen',
           'a.precio',
           
@@ -60,6 +61,7 @@ router.get('/:artiId',(req,res) => {
           'a.id_producto',
           'a.tipo_producto as categoria',
           'a.nombre_producto',
+          'a.descripcion',
           'a.imagen',
           'a.precio',
           

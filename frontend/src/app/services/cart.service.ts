@@ -48,7 +48,7 @@ export class CartService {
 
     let info: CartModelPublic = JSON.parse(localStorage.getItem('cart') ??'{}');
 
-    if (info !== null && info !== undefined && info.ArtData[0].incart !== 0) {
+    if (info && Array.isArray(info.ArtData) && info.ArtData.length > 0 && info.ArtData[0].incart !== 0){
       // assign the value to our data variable which corresponds to the LocalStorage data format
       this.cartDataClient = info;
       // Loop through each entry and put it in the cartDataServer object
@@ -80,7 +80,7 @@ export class CartService {
 
     let a = this.cartDataServer.data[index];
     // @ts-ignore
-    subTotal = a.articulo.precio * a.numInCart ?? 0;
+    subTotal = a.articulo.precio * a.numInCart;
 
     
 
