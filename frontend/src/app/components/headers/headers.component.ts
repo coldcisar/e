@@ -12,8 +12,8 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./headers.component.scss']
 })
 export class HeadersComponent implements OnInit {
-  cartData!: CartModelServer;
-  cartTotal!: number;
+  cartData: CartModelServer={} as CartModelServer;
+  cartTotal: number=0;
 
   constructor(public cartService: CartService) {
   }

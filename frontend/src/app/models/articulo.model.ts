@@ -13,6 +13,6 @@ export interface ArticuloModelServer {
   
   export interface serverResponse  {
     count: number;
-    articulos: ArticuloModelServer[]
+    products: ArticuloModelServer[]
   };
   
