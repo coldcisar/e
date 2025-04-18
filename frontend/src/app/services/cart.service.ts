@@ -279,15 +279,15 @@ export class CartService {
     let Total = 0;
 
     this.cartDataServer.data.forEach(a => {
-      if(a.articulo){ 
-        const {precio} = a.articulo;
-        // @ts-ignore
-        Total += numInCart * precio;
-    }
+      const {numInCart} = a;
+      const {precio} = a.articulo!;
+      // @ts-ignore
+      Total += numInCart * precio;
     });
     this.cartDataServer.total = Total;
     this.cartTotal$.next(this.cartDataServer.total);
   }
+
 
   private resetServerData() {
     this.cartDataServer = {
