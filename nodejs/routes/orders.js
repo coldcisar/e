@@ -29,8 +29,41 @@ router.get('/',(req,res) => {
             }
         }).catch(err => console.log(err));
 });
+// Get Single Order
+router.get('/:id', async (req, res) => {
+    let order_id = req.params.id;
+    console.log(order_id);
 
-router.post('/new',(req,res) =>{
+    database.table('ordenes_detalles as od')
+        .join([
+            {
+                table: 'ordenes as o',
+                on: 'o.order_id = od.order_id'
+            },
+            {
+                table: 'articulos as a',
+                on: 'a.id_producto = od.articulo_id'
+            },
+            {
+                table: 'user as u',
+                on: 'u.user_id = o.id_comprador'
+            }
+        ])
+        .withFields(['o.order_id', 'a.nombre_producto', 'a.descripcion', 'a.precio', 'a.imagen', 'od.cantidad as cantidadOrdenada'])
+        .filter({'o.order_id': order_id})
+        .getAll()
+        .then(ordenes => {
+            console.log(ordenes);
+            if (ordenes.length > 0) {
+                res.json(ordenes);
+            } else {
+                res.json({message: "No orders found"});
+            }
+
+        }).catch(err => res.json(err));
+});
+
+router.post('/nuevo',(req,res) =>{
 
     let {userId,articulos}=req.body;
     if(userId != null && userId > 0 && !isNaN(userId)){
@@ -88,7 +121,7 @@ router.post('/new',(req,res) =>{
     
 });
 
-router.post('/payment',(req,res)=>{
+router.post('/pago',(req,res)=>{
     setTimeout(()=>{
         res.status(200).json({success:true});
     },3000);

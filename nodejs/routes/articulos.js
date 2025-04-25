@@ -29,6 +29,7 @@ router.get('/', function(req, res) {
           'a.descripcion',
           'a.imagen',
           'a.precio',
+          'a.cantidad'
           
         ])
         .slice(startValue,endValue)
@@ -64,6 +65,7 @@ router.get('/:artiId',(req,res) => {
           'a.descripcion',
           'a.imagen',
           'a.precio',
+          'a.cantidad'
           
         ])
         .filter({'a.id_producto':articuloId})
