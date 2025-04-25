@@ -237,8 +237,8 @@ export class CartService {
 
         this.resetServerData();
         this.httpClient.post<OrderConfirmationResponse>(`${this.ServerURL}ordenes/nuevo`, {
-          user_id: user_id,
-          articulo: this.cartDataClient.ArtData
+          userId: user_id,
+          articulos: this.cartDataClient.ArtData
         }).subscribe((data: OrderConfirmationResponse) => {
 
           this.orderService.getSingleOrder(data.order_id).then(arti => {

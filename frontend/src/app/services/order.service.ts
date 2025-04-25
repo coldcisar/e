@@ -14,16 +14,16 @@ export class OrderService {
   }
 
 
-  getSingleOrder(order_id: Number) {
+  getSingleOrder(order_id: number) {
     return this.http.get<ArticuloResponseModel[]>(`${this.ServerURL}ordenes/${order_id}`).toPromise();
   }
 }
 
 interface ArticuloResponseModel {
-  id_producto: Number;
-  nombre_producto: String;
-  descripcion: String;
-  precio: Number;
-  cantidadOrdenada: Number;
-  imagen: String;
+  id_producto: number;
+  nombre_producto: string;
+  descripcion: string;
+  precio: number;
+  cantidadOrdenada: number;
+  imagen: string;
 }

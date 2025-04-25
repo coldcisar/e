@@ -1,0 +1,15 @@
+.cart-dropdown {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    width: 300px;
+    top: 100%;
+    right: 0;
+    z-index: 999;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .dropdown:hover .cart-dropdown {
+    display: block;
+  }
+  

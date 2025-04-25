@@ -493,6 +493,11 @@ textarea.input {
 	Cart
 \*----------------------------*/
 
+.cart-btns {
+  position: relative;
+  z-index: 10;
+}
+
 .header-ctn {
   float: right;
   padding: 15px 0px;
