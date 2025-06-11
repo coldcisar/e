@@ -236,31 +236,44 @@ export class CartService {
 
 
         this.resetServerData();
-        this.httpClient.post<OrderConfirmationResponse>(`${this.ServerURL}ordenes/nuevo`, {
-          userId: user_id,
-          articulos: this.cartDataClient.ArtData
-        }).subscribe((data: OrderConfirmationResponse) => {
-
-          this.orderService.getSingleOrder(data.order_id).then(arti => {
-            if (data.success) {
-              const navigationExtras: NavigationExtras = {
-                state: {
-                  message: data.message,
-                  articulos: arti,
-                  order_id: data.order_id,
-                  total: this.cartDataClient.total
-                }
-              };
-              this.spinner.hide().then();
-              this.router.navigate(['/thankyou'], navigationExtras).then(p => {
-                this.cartDataClient = {ArtData: [{incart: 0, id_producto: 0}], total: 0};
-                this.cartTotal$.next(0);
-                localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
-              });
-            }
-          });
-
-        })
+        // ...
+this.httpClient.post<OrderConfirmationResponse>(`${this.ServerURL}ordenes/nuevo`, {
+  userId: user_id,
+  articulos: this.cartDataClient.ArtData
+})
+.subscribe(
+  // 1. Callback de ÉXITO (lo que ya tenías)
+  (data: OrderConfirmationResponse) => {
+    this.orderService.getSingleOrder(data.order_id).then(arti => {
+      if (data.success) {
+        const navigationExtras: NavigationExtras = {
+          state: {
+            message: data.message,
+            articulos: arti,
+            order_id: data.order_id,
+            total: this.cartDataClient.total
+          }
+        };
+        this.spinner.hide().then();
+        this.router.navigate(['/thankyou'], navigationExtras).then(p => {
+          this.cartDataClient = { ArtData: [{ incart: 0, id_producto: 0 }], total: 0 };
+          this.cartTotal$.next(0);
+          localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
+        });
+      }
+    });
+  },
+  // 2. Callback de ERROR (la parte nueva y necesaria)
+  (error) => {
+    console.error('El backend ha fallado:', error);
+    this.spinner.hide(); // Ocultar el spinner en caso de error
+    this.toast.error('No se pudo crear la orden. Inténtalo de nuevo.', 'Error del Servidor', {
+       timeOut: 3000,
+       progressBar: true
+    });
+  }
+);
+// ...
       } else {
         this.spinner.hide().then();
         this.router.navigateByUrl('/checkout').then();

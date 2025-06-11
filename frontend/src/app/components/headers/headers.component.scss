@@ -1,15 +1,83 @@
+/* ==========================================================================
+   SOLUCIÓN PARA HEADER Y DROPDOWN DEL CARRITO EN ANGULAR
+   ========================================================================== */
+
+/* 1. Asegura que toda la cabecera esté en la capa superior de la página */
+header {
+  position: relative; /* Obligatorio para que z-index funcione */
+  z-index: 1000;      /* Un número alto para ponerla por encima del contenido principal */
+}
+
+/* 2. Reglas para el contenedor del dropdown */
+.header-ctn .dropdown {
+  position: relative; /* El padre necesita ser relativo para posicionar el menú */
+}
+
+/* 3. Estilos originales del menú desplegable del carrito */
 .cart-dropdown {
-    display: none;
-    position: absolute;
-    background-color: #fff;
-    width: 300px;
-    top: 100%;
-    right: 0;
-    z-index: 999;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  }
+  position: absolute;
+  width: 300px;
+  background: #FFF;
+  padding: 15px;
+  box-shadow: 0px 0px 10px -5px rgba(0,0,0,0.3); /* Una sombra más moderna */
+  z-index: 999;
+  right: 0;
+  top: 100%; /* Posiciona el menú justo debajo del ícono del carrito */
   
-  .dropdown:hover .cart-dropdown {
-    display: block;
-  }
-  
+  /* Lógica para ocultar/mostrar con animación */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(15px); /* Empieza un poco abajo */
+  transition: all 0.2s ease-in-out;
+}
+
+/* 4. REEMPLAZO DE LA LÓGICA DE JAVASCRIPT POR CSS PURO */
+/* Cuando pasas el mouse sobre el contenedor, el menú se hace visible */
+.header-ctn .dropdown:hover > .cart-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0); /* Vuelve a su posición original */
+}
+
+/* 5. Estilos originales para la lista y el resumen */
+.cart-dropdown .cart-list {
+  max-height: 180px;
+  overflow-y: auto;
+  margin-bottom: 15px;
+}
+
+.cart-dropdown .cart-summary {
+  border-top: 1px solid #E4E7ED;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+/* 6. Estilos mejorados para los botones, asegurando que sean clickeables */
+.cart-dropdown .cart-btns {
+    /* Quitamos el margen negativo para evitar problemas de layout */
+}
+
+.cart-dropdown .cart-btns > a {
+  display: inline-block; /* Importante para que ocupen su espacio */
+  width: 49%;
+  padding: 12px 5px; /* Ajustamos padding */
+  color: #FFF;
+  text-align: center;
+  font-weight: 700;
+  transition: 0.2s all;
+  border-radius: 4px; /* Un radio de borde ligero */
+  box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
+}
+
+.cart-dropdown .cart-btns > a:first-child {
+  background-color: #1e1f29;
+  margin-right: 2%; /* Pequeño espacio entre botones */
+}
+
+.cart-dropdown .cart-btns > a:last-child {
+  background-color: #D10024;
+}
+
+.cart-dropdown .cart-btns > a:hover {
+  opacity: 0.9;
+}

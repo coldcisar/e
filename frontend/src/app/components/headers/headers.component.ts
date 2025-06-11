@@ -3,11 +3,12 @@ import {Component, OnInit} from '@angular/core';
 import {CartService} from "../../services/cart.service";
 import {CartModelServer} from "../../models/cart.model";
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-headers',
   standalone:true,
-  imports:[CommonModule],
+  imports:[CommonModule,RouterModule],
   templateUrl: './headers.component.html',
   styleUrls: ['./headers.component.scss']
 })

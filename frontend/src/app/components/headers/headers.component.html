@@ -88,8 +88,8 @@
                     <h5>TOTAL : {{cartTotal | currency:'CLP'}}</h5>
                   </div>
                   <div class="cart-btns">
-                    <a routerLink="/cart">View Cart</a>
-                    <a routerLink="/checkout">Checkout <i class="fa fa-arrow-circle-right"></i></a>
+                    <a [routerLink]="['/cart']">View Cart</a>
+                    <a [routerLink]="['/checkout']">Checkout <i class="fa fa-arrow-circle-right"></i></a>
                   </div>
                 </div>
               </div>
