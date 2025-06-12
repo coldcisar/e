@@ -87,76 +87,41 @@ export class CartService {
     return subTotal;
   }
 
-  AddProductToCart(id_producto: number, cantidad?: number) {
+  // En tu archivo cart.service.ts
 
-    this.ArticuloService.getSingleProduct(id_producto).subscribe(arti => {
-      // If the cart is empty
+AddProductToCart(id_producto: number, cantidad?: number) {
+  this.ArticuloService.getSingleProduct(id_producto).subscribe(arti => {
+    const selectedQuantity = cantidad !== undefined ? cantidad : 1;
+
+    let index = this.cartDataServer.data.findIndex(p => p.articulo?.id_producto === id_producto);
+
+    if (index !== -1) {
+      // Actualizamos la cantidad del producto existente.
+      this.cartDataServer.data[index].numInCart = selectedQuantity;
+      this.cartDataClient.ArtData[index].incart = selectedQuantity;
+      this.toast.info(`${arti.nombre_producto} quantity updated in the cart.`, "Product Updated");
+
+    } else {
+      // Verificamos si el carrito está en su estado inicial (vacío)
       if (this.cartDataServer.data[0].articulo === undefined) {
-        this.cartDataServer.data[0].articulo = arti;
-        this.cartDataServer.data[0].numInCart = cantidad !== undefined ? cantidad : 1;
-        this.CalculateTotal();
-        this.cartDataClient.ArtData[0].incart = this.cartDataServer.data[0].numInCart;
-        this.cartDataClient.ArtData[0].id_producto = arti.id_producto;
-        this.cartDataClient.total = this.cartDataServer.total;
-        localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
-        this.cartDataObs$.next({...this.cartDataServer});
-        this.toast.success(`${arti.nombre_producto} added to the cart.`, "Product Added", {
-          timeOut: 1500,
-          progressBar: true,
-          progressAnimation: 'increasing',
-          positionClass: 'toast-top-right'
-        })
-      }  // END of IF
-      // Cart is not empty
-      else {
-        let index = this.cartDataServer.data.findIndex(a => a.articulo?.id_producto === arti.id_producto);
+        // Usamos el primer elemento del array que está vacío
+        this.cartDataServer.data[0] = { articulo: arti, numInCart: selectedQuantity };
+        this.cartDataClient.ArtData[0] = { incart: selectedQuantity, id_producto: arti.id_producto };
+      } else {
+        // Si no está vacío, añadimos el nuevo producto al final
+        this.cartDataServer.data.push({ articulo: arti, numInCart: selectedQuantity });
+        this.cartDataClient.ArtData.push({ incart: selectedQuantity, id_producto: arti.id_producto });
+      }
+      this.toast.success(`${arti.nombre_producto} added to the cart.`, "Product Added");
+    }
 
-        // 1. If chosen product is already in cart array
-        if (index !== -1) {
-
-          if (cantidad !== undefined && cantidad <= arti.cantidad) {
-            // @ts-ignore
-            this.cartDataServer.data[index].numInCart = this.cartDataServer.data[index].numInCart < arti.cantidad ? cantidad : arti.cantidad;
-          } else {
-            // @ts-ignore
-            this.cartDataServer.data[index].numInCart < arti.cantidad ? this.cartDataServer.data[index].numInCart++ : arti.cantidad;
-          }
-
-
-          this.cartDataClient.ArtData[index].incart = this.cartDataServer.data[index].numInCart;
-          this.toast.info(`${arti.nombre_producto} quantity updated in the cart.`, "Product Updated", {
-            timeOut: 1500,
-            progressBar: true,
-            progressAnimation: 'increasing',
-            positionClass: 'toast-top-right'
-          })
-        }
-        // 2. If chosen product is not in cart array
-        else {
-          this.cartDataServer.data.push({
-            articulo: arti,
-            numInCart: 1
-          });
-          this.cartDataClient.ArtData.push({
-            incart: 1,
-            id_producto: arti.id_producto
-          });
-          this.toast.success(`${arti.nombre_producto} added to the cart.`, "Product Added", {
-            timeOut: 1500,
-            progressBar: true,
-            progressAnimation: 'increasing',
-            positionClass: 'toast-top-right'
-          })
-        }
-        this.CalculateTotal();
-        this.cartDataClient.total = this.cartDataServer.total;
-        localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
-        this.cartDataObs$.next({...this.cartDataServer});
-      }  // END of ELSE
-
-
-    });
-  }
+    // Finalmente, recalculamos todo y guardamos
+    this.CalculateTotal();
+    this.cartDataClient.total = this.cartDataServer.total;
+    localStorage.setItem('cart', JSON.stringify(this.cartDataClient));
+    this.cartDataObs$.next({ ...this.cartDataServer });
+  });
+}
 
   UpdateCartData(index:number, increase: Boolean) {
     let data = this.cartDataServer.data[index];
@@ -190,8 +155,6 @@ export class CartService {
   }
 
   DeleteProductFromCart(index:number) {
-    /*    console.log(this.cartDataClient.prodData[index].prodId);
-        console.log(this.cartDataServer.data[index].product.id);*/
 
     if (window.confirm('Are you sure you want to delete the item?')) {
       this.cartDataServer.data.splice(index, 1);

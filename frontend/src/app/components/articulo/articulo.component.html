@@ -9,8 +9,7 @@
           <ul class="breadcrumb-tree">
             <li><a href="#">Home</a></li>
             <li><a href="#">All Categories</a></li>
-            <li><a href="#">Accessories</a></li>
-            <li><a href="#">{{articulo?.tipo_producto}}</a></li>
+            <li><a href="#">{{articulo?.nombre_categoria}}</a></li>
             <li class="active">{{articulo?.nombre_producto}}</li>
           </ul>
         </div>
@@ -88,20 +87,19 @@
               <div class="qty-label">
                 Qty
                 <div class="input-number">
-                  <input #quantity [max]="articulo?.cantidad" [min]="(articulo?.cantidad ?? 1) >=1 ? articulo?.cantidad : 0"
-                         readonly type="number" value="{{(articulo?.cantidad??0) >= 1 ? 1 : 0}}">
+                  <div class="input">{{ quantity }}</div>
                   <span (click)="Increase()" class="qty-up">+</span>
                   <span (click)="Decrease()" class="qty-down">-</span>
                 </div>
               </div>
-              <button (click)="addToCart(articulo!.id_producto)" *ngIf="(articulo?.cantidad ?? 0 )>= 1" class="add-to-cart-btn"><i
-                class="fa fa-shopping-cart"></i>Add To Cart
+            
+              <button (click)="addToCart(articulo!.id_producto)" *ngIf="(articulo?.cantidad ?? 0 )>= 1" class="add-to-cart-btn">
+                <i class="fa fa-shopping-cart"></i>Add To Cart
               </button>
-            </div>
-  
+              </div>
             <ul class="product-links">
-              <li>Category:</li>
-              <li><a href="#">{{articulo?.tipo_producto}}</a></li>
+              <li>Categoria:</li>
+              <li><a href="#">{{articulo?.nombre_categoria}}</a></li>
             </ul>
   
             <ul class="product-links">

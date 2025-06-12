@@ -1,6 +1,6 @@
 
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, ParamMap} from "@angular/router";
+import {ActivatedRoute, ParamMap, RouterModule} from "@angular/router";
 import {ArticuloService} from "../../services/articulo.service";
 import {ArticuloModelServer} from "../../models/articulo.model";
 import {map} from "rxjs/operators";
@@ -11,7 +11,7 @@ declare let $: any;
 @Component({
   selector: 'app-articulo',
   standalone:true,
-  imports:[CommonModule],
+  imports:[CommonModule,RouterModule],
   templateUrl: './articulo.component.html',
   styleUrls: ['./articulo.component.scss']
 })
@@ -22,7 +22,7 @@ export class ArticuloComponent implements AfterViewInit, OnInit {
   thumbimages: any[] = [];
 
 
-  @ViewChild('cantidad', { static: false }) quantityInput!: any;
+  quantity: number = 1;
 
   constructor(private route: ActivatedRoute,
               private articuloService: ArticuloService,
@@ -32,20 +32,31 @@ export class ArticuloComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
-    this.route.paramMap.pipe(
-      map((param: ParamMap) => {
-        // @ts-ignore
-        return param.params.id;
-      })
-    ).subscribe(id_producto => {
-      this.id_producto = id_producto;
-      this.articuloService.getSingleProduct(this.id_producto ??  0).subscribe(arti => {
-        this.articulo = arti;
-        if (arti.imagen !== null) {
-          this.thumbimages = arti.imagen.split(';');
-        }
-
-      });
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id_producto');
+      
+      // PRUEBA 1: Verificamos si estamos obteniendo el ID correctamente de la URL.
+      console.log('1. ID obtenido de la URL:', id);
+  
+      if (id) {
+        this.articuloService.getSingleProduct(Number(id)).subscribe(data => {
+          
+          // PRUEBA 2: ¡LA MÁS IMPORTANTE! Vemos el objeto JSON crudo que llega del backend.
+          console.log('2. Respuesta COMPLETA del backend:', data);
+  
+          this.articulo = data;
+  
+          // PRUEBA 3: Verificamos que la variable del componente fue asignada.
+          console.log('3. Variable this.articulo ASIGNADA:', this.articulo);
+  
+          // Lógica de las imágenes que ya corregimos
+          if (this.articulo && this.articulo.imagen) {
+            this.thumbimages = this.articulo.imagen.split(';');
+          } else {
+            this.thumbimages = [];
+          }
+        });
+      }
     });
   }
 
@@ -90,19 +101,21 @@ export class ArticuloComponent implements AfterViewInit, OnInit {
   }
 
   addToCart(id_producto: number) {
-    this.cartService.AddProductToCart(id_producto, this.quantityInput.nativeElement.value);
+    this.cartService.AddProductToCart(id_producto, this.quantity);
   }
+  
 
   Increase() {
-    let value = parseInt(this.quantityInput.nativeElement.value) || 1;
-    value = Math.min(value + 1, this.articulo?.cantidad || 1);
-    this.quantityInput.nativeElement.value = value.toString();
+    const maxStock = this.articulo?.cantidad || 1;
+    if (this.quantity < maxStock) {
+      this.quantity++;
+    }
   }
   
   Decrease() {
-    let value = parseInt(this.quantityInput.nativeElement.value) || 1;
-    value = Math.max(value - 1, 1);
-    this.quantityInput.nativeElement.value = value.toString();
+    if (this.quantity > 1) {
+      this.quantity--;
+    }
   }
   
 }

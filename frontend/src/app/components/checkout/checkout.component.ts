@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CartService} from "../../services/cart.service";
 import {CartModelServer} from "../../models/cart.model";
-import {Router} from "@angular/router";
+import {Router, RouterModule} from "@angular/router";
 import {OrderService} from "../../services/order.service";
 import {NgxSpinnerModule, NgxSpinnerService} from "ngx-spinner";
 import {FormBuilder, NgForm, Validators} from "@angular/forms";
@@ -11,7 +11,7 @@ import { ArticuloModelServer } from '../../models/articulo.model';
 @Component({
   selector: 'app-checkout',
   standalone:true,
-  imports:[CommonModule,NgxSpinnerModule],
+  imports:[CommonModule,NgxSpinnerModule,RouterModule],
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss']
 })

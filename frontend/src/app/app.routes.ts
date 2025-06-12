@@ -12,7 +12,7 @@ import { ArticuloComponent } from './components/articulo/articulo.component';
     path: '', loadComponent:()=>import('./components/home/home.component').then(m => m.HomeComponent)
   },
   {
-    path: 'articulo/id_producto', loadComponent:()=>import('./components/articulo/articulo.component').then(m => m.ArticuloComponent)
+    path: 'articulos/:id_producto', loadComponent:()=>import('./components/articulo/articulo.component').then(m => m.ArticuloComponent)
   },
   {
     path: 'cart',loadComponent:()=>import('./components/cart/cart.component').then(m => m.CartComponent)

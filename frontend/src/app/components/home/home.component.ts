@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {ArticuloService} from "../../services/articulo.service";
 import {ArticuloModelServer, serverResponse} from "../../models/articulo.model";
 import { CartService } from '../../services/cart.service';
-import {Router} from "@angular/router";
+import {Router, RouterModule} from "@angular/router";
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -11,7 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
   selector: 'app-home',
   templateUrl: './home.component.html',
   standalone:true,
-  imports:[CommonModule,HttpClientModule],
+  imports:[CommonModule,HttpClientModule,RouterModule],
   styleUrls: ['./home.component.scss']
 })
 
