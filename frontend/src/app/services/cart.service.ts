@@ -20,8 +20,7 @@ export class CartService {
 
   ServerURL = environment.serverURL;
 
-  private cartDataClient: CartModelPublic = {ArtData: [{incart: 0, id_producto: 0}], total: 0};  // This will be sent to the backend Server as post data
-  // Cart Data variable to store the cart information on the server
+  private cartDataClient: CartModelPublic = {ArtData: [{incart: 0, id_producto: 0}], total: 0};  
   private cartDataServer: CartModelServer = {
     data: [{
       articulo: undefined,
@@ -31,7 +30,6 @@ export class CartService {
   };
 
   cartTotal$ = new BehaviorSubject<number>(0);
-  // Data variable to store the cart information on the client's local storage
 
   cartDataObs$ = new BehaviorSubject<CartModelServer>(this.cartDataServer);
 
@@ -182,7 +180,6 @@ AddProductToCart(id_producto: number, cantidad?: number) {
         this.cartDataObs$.next({...this.cartDataServer});
       }
     }
-    // If the user doesn't want to delete the product, hits the CANCEL button
     else {
       return;
     }
@@ -205,7 +202,6 @@ this.httpClient.post<OrderConfirmationResponse>(`${this.ServerURL}ordenes/nuevo`
   articulos: this.cartDataClient.ArtData
 })
 .subscribe(
-  // 1. Callback de ÉXITO (lo que ya tenías)
   (data: OrderConfirmationResponse) => {
     this.orderService.getSingleOrder(data.order_id).then(arti => {
       if (data.success) {
@@ -226,10 +222,9 @@ this.httpClient.post<OrderConfirmationResponse>(`${this.ServerURL}ordenes/nuevo`
       }
     });
   },
-  // 2. Callback de ERROR (la parte nueva y necesaria)
   (error) => {
     console.error('El backend ha fallado:', error);
-    this.spinner.hide(); // Ocultar el spinner en caso de error
+    this.spinner.hide(); 
     this.toast.error('No se pudo crear la orden. Inténtalo de nuevo.', 'Error del Servidor', {
        timeOut: 3000,
        progressBar: true

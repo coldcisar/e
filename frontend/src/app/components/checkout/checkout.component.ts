@@ -51,10 +51,8 @@ export class CheckoutComponent implements OnInit {
     
 
 
-  //console.log(this.checkoutForm.value);
 
   }
-  // ... dentro de la clase CheckoutComponent ...
 
 // Esta función calcula el subtotal de forma segura
 calculateSubtotal(precio: string, cantidad: number): number {

@@ -37,25 +37,26 @@ export class ProfileComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.userService.userData$.pipe(
-          map((user) => { 
-            if (user instanceof SocialUser) {
-              // Si es usuario de Google, creamos un objeto con el formato que nuestro HTML espera
-              return {
-                ...user,
-                fname: user.firstName,
-                lname: user.lastName,
-                photoUrl: user.photoUrl,
-                userId: user.id // Asignamos 'id' de Google a 'userId'
-              };
-            } else {
-              // Si es un usuario normal, lo dejamos pasar
-              return user;
-            }
-          })
-        ).subscribe((data) => { // La sintaxis correcta para la función de flecha
-            this.myUser = data;
-        });
+      this.userService.userData$.pipe(
+        map((user) => {
+          // Log para ver qué entra al 'map'
+          console.log('1. Dato entrando al operador map:', user);
+          
+          if (user instanceof SocialUser) {
+            return {
+              ...user,
+              fname: user.firstName,
+              lname: user.lastName,
+              photoUrl: user.photoUrl,
+              userId: user.id
+            };
+          } else {
+            return user;
+          }
+        })
+      ).subscribe((data) => {
+        this.myUser = data;
+      });
     }
 
     logout() {
