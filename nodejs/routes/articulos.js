@@ -32,7 +32,6 @@ router.get('/', function (req, res) {
             'a.cantidad'
         ])
         .slice(startValue, endValue)
-        // --- CORRECCIÓN 1: El valor para ordenar debe ser 1 (asc) o -1 (desc) ---
         .sort({ id_producto: 1 }) 
         .getAll()
         .then(arts => {
@@ -50,8 +49,7 @@ router.get('/', function (req, res) {
         }).catch(err => console.log(err));
 });
 
-/* OBTENER UN SOLO ARTÍCULO POR SU ID */
-// --- CORRECCIÓN 2: Cambiamos el nombre del parámetro a ':id' para que coincida con el frontend ---
+
 router.get('/:id', (req, res) => {
     let articuloId = req.params.id; // Obtenemos el ID de la URL
 
@@ -81,8 +79,6 @@ router.get('/:id', (req, res) => {
 
 /* OBTENER ARTÍCULOS POR CATEGORÍA */
 router.get('/categoria/:nombreCat', (req, res) => {
-    // ... tu código para esta ruta parece tener una inyección SQL en el JOIN,
-    // pero lo dejaremos así por ahora para enfocarnos en el problema principal.
     const cat_nombre = req.params.nombreCat;
     database.table('articulos as a')
         .join([{

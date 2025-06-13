@@ -1,8 +1,7 @@
 const MySqli = require('mysqli');
 const bcrypt = require('bcrypt');
 
-// --- PASO 1: Define tu llave secreta aquí ---
-// Puede ser cualquier cadena de texto larga y difícil de adivinar.
+
 const HASH_SECRET = 'esta-es-una-clave-muy-secreta-y-larga-para-proteger-mis-tokens';
 
 // Configuración de la conexión a la base de datos (ajústala con tus datos)
@@ -27,18 +26,15 @@ const hasAuthFields = (req, res, next) => {
     }
 };
 
-// Middleware para verificar si el usuario existe y la contraseña coincide
+
 const isPasswordAndUserMatch = async (req, res, next) => {
     let { email, password } = req.body;
-
     try {
         const user = await db.table('user').filter({ email: email }).get();
         if (user) {
             const match = await bcrypt.compare(password, user.password);
-
             if (match) {
-                req.body.email = user.email;
-                req.body.username = user.username;
+                req.user = user;
                 next();
             } else {
                 res.status(401).json({ message: 'Incorrect password.' });
@@ -52,10 +48,9 @@ const isPasswordAndUserMatch = async (req, res, next) => {
 };
 
 
-// --- PASO 2: Añade la clave secreta a las exportaciones ---
 module.exports = {
     database: db,
     hasAuthFields: hasAuthFields,
     isPasswordAndUserMatch: isPasswordAndUserMatch,
-    secret: HASH_SECRET // <-- Añadimos la clave aquí
+    secret: HASH_SECRET 
 };

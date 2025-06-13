@@ -9,11 +9,27 @@ const bcrypt = require('bcrypt');
 // LOGIN ROUTE
 
 router.post('/login', [helper.hasAuthFields, helper.isPasswordAndUserMatch], (req, res) => {
-    let token = jwt.sign({state: 'true', email: req.body.email, username: req.body.username}, helper.secret, {
-        algorithm: 'HS512',
-        expiresIn: '4h'
+    // El usuario completo ahora está disponible en req.user gracias al middleware
+    const user = req.user;
+
+    // Creamos el token con más información útil
+    let token = jwt.sign(
+        { userId: user.id, username: user.username, email: user.email }, // Usamos 'id' de la BD
+        helper.secret, 
+        { expiresIn: '4h' }
+    );
+
+    // Enviamos una respuesta JSON con TODOS los datos que el frontend necesita
+    res.json({
+        token: token, 
+        auth: true, 
+        email: user.email, 
+        username: user.username,
+        fname: user.fname,
+        lname: user.lname,
+        photoUrl: user.photoUrl,
+        userId: user.id // Usamos 'id' de la BD
     });
-    res.json({token: token, auth: true, email: req.body.email, username: req.body.username});
 });
 
 // REGISTER ROUTE
@@ -60,9 +76,7 @@ router.post('/register', [
             lname: lname || null,
             fname: fname || null
         }).then(result => {
-            // --- AÑADE ESTA LÍNEA OTRA VEZ ---
-            console.log('Respuesta cruda de la inserción en la BD:', result);
-        
+           
             if (result.insertId > 0) {
                 res.status(201).json({message: 'Registration successful.'});
             } else {
