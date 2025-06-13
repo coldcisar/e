@@ -1,59 +1,61 @@
-const express= require('express');
-const path =require('path')
-const cookieParser=require('cookie-parser');
-const logger=require('morgan');
-const cors=require('cors');
 const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cors = require('cors');
 
+// --- Rutas ---
+const authRoutes = require('./routes/auth');
+const productsRoute = require('./routes/articulos');
+const usersRoute = require('./routes/users');
+const ordersRoute = require('./routes/orders');
 
 const app = express();
 
+// --- Configuración de Middlewares ---
 
+// 1. CORS: Debe ser el primero para manejar la seguridad del navegador.
+app.use(cors());
+
+// 2. Logger y Parsers
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors({
-  origin: "*",
-  methods:['GET','POST','PATCH','DELETE','PUT'],
-  allowedHeaders: 'Content-Type, Authorization, Origin, X-Request-With, Accept'
-}));
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-app.use(logger('dev'));
 app.use(cookieParser());
+
+// 3. Servir archivos estáticos (imágenes, etc.)
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-const productsRoute = require('./routes/articulos');
-const usersRoute = require('./routes/users');
-const ordersRoute= require('./routes/orders');
-
-app.use('/api/articulos',productsRoute);
-app.use('/api/users',usersRoute);
-app.use('/api/ordenes',ordersRoute);
+// --- Configuración de Rutas de la API ---
+app.use('/api/auth', authRoutes);
+app.use('/api/articulos', productsRoute);
+app.use('/api/users', usersRoute);
+app.use('/api/ordenes', ordersRoute);
 
 
+// --- Manejo de Errores (Debe ir después de las rutas) ---
 
-
-
-// catch 404 and forward to error handler
+// Captura 404 y lo envía al manejador de errores
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
+// Manejador de errores principal
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-
+  // Solo muestra el error detallado en desarrollo
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  // Renderiza una página de error (si tienes una)
   res.status(err.status || 500);
-  res.render('error',{
-    title: 'Error'
-  });
+  res.send('Error: ' + err.message); // Enviamos un mensaje de error simple
 });
 
-module.exports = app;
+
+// --- Iniciar el Servidor (Debe ir al final de todo) ---
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo y escuchando en el puerto ${PORT}`);
+});
