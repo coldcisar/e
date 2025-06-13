@@ -48,9 +48,17 @@ export class CheckoutComponent implements OnInit {
    this.spinner.show().then(p => {
       this.cartService.CheckoutFromCart(204340056);
     });
+    
 
 
   //console.log(this.checkoutForm.value);
 
   }
+  // ... dentro de la clase CheckoutComponent ...
+
+// Esta función calcula el subtotal de forma segura
+calculateSubtotal(precio: string, cantidad: number): number {
+  // Convierte el precio de string a número y lo multiplica por la cantidad
+  return Number(precio) * cantidad;
+}
 }

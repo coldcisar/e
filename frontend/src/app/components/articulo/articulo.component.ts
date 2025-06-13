@@ -35,21 +35,16 @@ export class ArticuloComponent implements AfterViewInit, OnInit {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id_producto');
       
-      // PRUEBA 1: Verificamos si estamos obteniendo el ID correctamente de la URL.
-      console.log('1. ID obtenido de la URL:', id);
+     
   
       if (id) {
         this.articuloService.getSingleProduct(Number(id)).subscribe(data => {
           
-          // PRUEBA 2: ¡LA MÁS IMPORTANTE! Vemos el objeto JSON crudo que llega del backend.
-          console.log('2. Respuesta COMPLETA del backend:', data);
+          
   
           this.articulo = data;
-  
-          // PRUEBA 3: Verificamos que la variable del componente fue asignada.
-          console.log('3. Variable this.articulo ASIGNADA:', this.articulo);
-  
-          // Lógica de las imágenes que ya corregimos
+          console.log('Datos del artículo recibidos en la página de detalle:', this.articulo);
+
           if (this.articulo && this.articulo.imagen) {
             this.thumbimages = this.articulo.imagen.split(';');
           } else {
@@ -62,7 +57,7 @@ export class ArticuloComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit(): void {
 
-    // Product Main img Slick
+    
     $('#product-main-img').slick({
       infinite: true,
       speed: 300,
@@ -72,7 +67,7 @@ export class ArticuloComponent implements AfterViewInit, OnInit {
       asNavFor: '#product-imgs',
     });
 
-    // Product imgs Slick
+    
     $('#product-imgs').slick({
       slidesToShow: 3,
       slidesToScroll: 1,
@@ -93,7 +88,7 @@ export class ArticuloComponent implements AfterViewInit, OnInit {
       ]
     });
 
-    // Product img zoom
+   
     var zoomMainProduct = document.getElementById('product-main-img');
     if (zoomMainProduct) {
       $('#product-main-img .product-preview').zoom();

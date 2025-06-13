@@ -5,6 +5,7 @@ import {CartComponent} from "./components/cart/cart.component";
 import {CheckoutComponent} from "./components/checkout/checkout.component";
 import {ThankyouComponent} from "./components/thankyou/thankyou.component";
 import { ArticuloComponent } from './components/articulo/articulo.component';
+import { ProfileGuard } from '../guard/profile.guard';
 
 
  export const routes: Routes = [
@@ -22,6 +23,12 @@ import { ArticuloComponent } from './components/articulo/articulo.component';
   },
   {
     path: 'thankyou', loadComponent:()=>import('./components/thankyou/thankyou.component').then(m => m.ThankyouComponent)
+  },
+  {
+    path: 'login',loadComponent:()=>import('./components/login/login.component').then(m=>m.LoginComponent)
+  },
+  {
+    path:'profile',loadComponent:()=>import('./components/profile/profile.component').then(m=>m.ProfileComponent),canActivate:[ProfileGuard]
   }
 ];
 

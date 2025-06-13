@@ -24,7 +24,7 @@ bootstrapApplication(AppComponent, {
           {
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(
-              'TU_CLIENT_ID_DE_GOOGLE.apps.googleusercontent.com' // <-- Reemplaza esto con tu Client ID
+              '197371929045-5unjfbgdg8t9bahik0fuqjtg4id38sq3.apps.googleusercontent.com' // <-- Reemplaza esto con tu Client ID
             )
           }
         ],

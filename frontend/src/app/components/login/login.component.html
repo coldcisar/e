@@ -1,1 +1,55 @@
-<p>login works!</p>
+<div class="container">
+    <div class="jumbotron">
+      <div class="row">
+        <div class="col-md-6 d-flex mx-auto flex-column">
+  
+          <form novalidate #myform="ngForm" (ngSubmit)="login(myform)">
+  
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input class="form-control" 
+                     id="email" 
+                     type="email" 
+                     [(ngModel)]="email" 
+                     name="email" 
+                     required
+                     email
+                     #emailInput="ngModel">
+  
+              <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="text-danger mt-1">
+                <small *ngIf="emailInput.errors?.['required']">El email es requerido.</small>
+                <small *ngIf="emailInput.errors?.['email']">Por favor, introduce un email válido.</small>
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input class="form-control" 
+                     id="password" 
+                     type="password" 
+                     [(ngModel)]="password" 
+                     name="password" 
+                     required
+                     #passwordInput="ngModel">
+  
+              <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="text-danger mt-1">
+                <small>La contraseña es requerida.</small>
+              </div>
+            </div>
+  
+            <div class="d-flex flex-column align-items-center justify-content-around">
+              <button class="btn btn-primary btn-sm btn-block" type="submit" [disabled]="myform.invalid">Login</button>
+              
+              <hr>
+              <h4 class="text-uppercase"><strong>Login Using</strong></h4>
+              
+              <button (click)="signInWithGoogle()" type="button" class="btn btn-danger btn-sm btn-block mt-4">
+                <span><i class="fa fa-google"></i> Google</span>
+              </button>
+            </div>
+          </form>
+  
+        </div>
+      </div>
+    </div>
+  </div>

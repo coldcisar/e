@@ -123,8 +123,7 @@
         <ng-container *ngIf="cartData && cartData.data && cartData.data.length > 0">
           <div class="order-col" *ngFor="let c of cartData.data">
             <div>{{c.numInCart}}x {{c?.articulo?.nombre_producto}}</div>
-            <div>{{ (c?.articulo?.precio || 0) * (c?.numInCart || 0) | currency:'CLP' }}</div>
-        </div>
+            <div>{{ calculateSubtotal(c.articulo!.precio, c.numInCart) | currency:'CLP' }}</div>        </div>
         </ng-container>  
         </div>
         <div class="order-col">

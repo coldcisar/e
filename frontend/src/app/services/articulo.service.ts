@@ -15,7 +15,7 @@ export class ArticuloService {
   }
 
   getAllProducts(limitOfResults=10): Observable<serverResponse> {
-    return this.http.get<serverResponse>(this.url + 'articulos', {
+    return this.http.get<serverResponse>(this.url + '/articulos/', {
       params: {
         limit: limitOfResults.toString()
       }
@@ -23,11 +23,11 @@ export class ArticuloService {
   }
 
   getSingleProduct(id_producto: number): Observable<ArticuloModelServer> {
-    return this.http.get<ArticuloModelServer>(this.url + 'articulos/' + id_producto);
+    return this.http.get<ArticuloModelServer>(this.url + '/articulos/' + id_producto);
   }
 
   getProductsFromCategory(nombre_categoria: string): Observable<ArticuloModelServer[]> {
-    return this.http.get<ArticuloModelServer[]>(this.url + 'articulos/categoria/' + nombre_categoria);
+    return this.http.get<ArticuloModelServer[]>(this.url + '/articulos/categoria/' + nombre_categoria);
   }
 
 }
