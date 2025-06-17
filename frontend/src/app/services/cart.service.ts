@@ -189,7 +189,7 @@ AddProductToCart(id_producto: number, cantidad?: number) {
 
   CheckoutFromCart(user_id: number) {
 
-    this.httpClient.post<{success:boolean}>(`${this.ServerURL}ordenes/pago`, null).subscribe((res: { success: boolean }) => {
+    this.httpClient.post<{success:boolean}>(`${this.ServerURL}/ordenes/pago`, null).subscribe((res: { success: boolean }) => {
       console.clear();
 
       if (res.success) {
@@ -197,7 +197,7 @@ AddProductToCart(id_producto: number, cantidad?: number) {
 
         this.resetServerData();
         // ...
-this.httpClient.post<OrderConfirmationResponse>(`${this.ServerURL}ordenes/nuevo`, {
+this.httpClient.post<OrderConfirmationResponse>(`${this.ServerURL}/ordenes/nuevo`, {
   userId: user_id,
   articulos: this.cartDataClient.ArtData
 })

@@ -1,0 +1,111 @@
+/* --- MEJORAS VISUALES PARA LAS TARJETAS DE PRODUCTO --- */
+
+/* Contenedor de la fila de productos para un mejor espaciado y alineación */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+/* Estilo base para cada tarjeta de producto */
+.product {
+  margin-bottom: 30px;
+  background: #ffffff;
+  border: 1px solid #e4e7ed;
+  border-radius: 8px; // Bordes redondeados para un look más suave
+  overflow: hidden;   // Asegura que la imagen no se salga de los bordes redondeados
+  transition: all 0.3s ease-in-out; // Transición suave para todos los efectos
+
+  // Sombra sutil para dar profundidad y hacer que "flote"
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    transform: translateY(-5px); // La tarjeta se eleva un poco al pasar el mouse
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1); // La sombra se hace más pronunciada
+  }
+}
+
+// Contenedor de la imagen del producto
+.product .product-img {
+  position: relative;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease; // Transición para el efecto de zoom
+  }
+}
+
+// Efecto de zoom en la imagen al pasar el mouse sobre la tarjeta
+.product:hover .product-img img {
+  transform: scale(1.05);
+}
+
+// Cuerpo de la tarjeta (información del producto)
+.product .product-body {
+  padding: 20px;
+  text-align: left; // Alineamos el texto a la izquierda para mejor legibilidad
+  // Aseguramos que todas las tarjetas tengan una altura mínima para alinear los botones
+  min-height: 220px; 
+  display: flex;
+  flex-direction: column; // Ordenamos los elementos verticalmente
+}
+
+// Estilo para la categoría (ej: "MANGA")
+.product .product-body .product-category {
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+  color: #8D99AE;
+  letter-spacing: 0.5px;
+}
+
+// Estilo para el nombre del producto
+.product .product-body .product-name {
+  text-transform: uppercase;
+  font-size: 16px;
+  margin-top: 5px;
+  // Limita el nombre a 2 líneas para mantener la altura de las tarjetas consistente
+  min-height: 48px;
+  
+  a {
+    font-weight: 700;
+  }
+}
+
+// Estilo para el precio
+.product .product-body .product-price {
+  color: #D10024;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 10px 0;
+  margin-top: auto; // Empuja el precio y el botón hacia abajo
+}
+
+// Botón "Ver Detalles"
+.add-to-cart {
+  padding: 0 20px 20px; // Ajustamos el padding
+}
+
+.add-to-cart .add-to-cart-btn {
+  width: 100%; // El botón ocupa todo el ancho
+  border-radius: 50px;
+  border: none;
+  background-color: #D10024;
+  color: #FFF;
+  font-weight: 700;
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; // Espacio entre el ícono y el texto
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #a7001c; // Un rojo un poco más oscuro al pasar el mouse
+    cursor: pointer;
+  }
+}

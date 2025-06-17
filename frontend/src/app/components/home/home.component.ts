@@ -27,7 +27,6 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.articuloService.getAllProducts(8).subscribe((arts: serverResponse ) => {
       this.articulos = arts.articulos;
-      console.log(this.articulos);
     });
   }
 

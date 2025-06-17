@@ -6,6 +6,7 @@ import {CheckoutComponent} from "./components/checkout/checkout.component";
 import {ThankyouComponent} from "./components/thankyou/thankyou.component";
 import { ArticuloComponent } from './components/articulo/articulo.component';
 import { ProfileGuard } from '../guard/profile.guard';
+import { SearchResultsComponent } from './components/search-results/search-results.component';
 
 
  export const routes: Routes = [
@@ -29,6 +30,9 @@ import { ProfileGuard } from '../guard/profile.guard';
   },
   {
     path:'profile',loadComponent:()=>import('./components/profile/profile.component').then(m=>m.ProfileComponent),canActivate:[ProfileGuard]
+  },
+  {
+    path: 'search/:query',loadComponent:()=>import('./components/search-results/search-results.component').then(m=>m.SearchResultsComponent) ,
   }
 ];
 

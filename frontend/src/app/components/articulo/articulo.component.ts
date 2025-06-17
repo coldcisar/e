@@ -1,5 +1,5 @@
 
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import {ActivatedRoute, ParamMap, RouterModule} from "@angular/router";
 import {ArticuloService} from "../../services/articulo.service";
 import {ArticuloModelServer} from "../../models/articulo.model";
@@ -15,45 +15,54 @@ declare let $: any;
   templateUrl: './articulo.component.html',
   styleUrls: ['./articulo.component.scss']
 })
-export class ArticuloComponent implements AfterViewInit, OnInit {
 
-  id_producto?: number;
-  articulo:ArticuloModelServer | undefined;
+export class ArticuloComponent implements OnInit, AfterViewInit {
+  articulo: ArticuloModelServer | undefined;
   thumbimages: any[] = [];
-
-
   quantity: number = 1;
 
-  constructor(private route: ActivatedRoute,
-              private articuloService: ArticuloService,
-              private cartService: CartService) {
+  relatedProducts: ArticuloModelServer[] = [];
+
+  constructor(
+    private route: ActivatedRoute,
+    private articuloService: ArticuloService,
+    private cartService: CartService,
+    private cdr:ChangeDetectorRef
+  ) { }
 
 
-  }
+
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      const id = params.get('id_producto');
-      
-     
   
-      if (id) {
-        this.articuloService.getSingleProduct(Number(id)).subscribe(data => {
-          
-          
-  
-          this.articulo = data;
-          console.log('Datos del artículo recibidos en la página de detalle:', this.articulo);
+    const id = params.get('id_producto');
 
-          if (this.articulo && this.articulo.imagen) {
-            this.thumbimages = this.articulo.imagen.split(';');
-          } else {
-            this.thumbimages = [];
-          }
-        });
-      }
+    if (id) {
+      this.articuloService.getSingleProduct(Number(id)).subscribe({
+        next: (product) => {
+          this.articulo = product;
+          console.log('ÉXITO: Datos del producto principal cargado:', this.articulo);
+
+          if (product && product.categoria) {
+            this.articuloService.getProductsFromCategory(product.categoria, product.id_producto)
+    .subscribe(related => { 
+
+     
+      this.relatedProducts = related;
     });
-  }
+
+          } else {
+            console.warn('El producto cargado no tiene una propiedad "categoria".');
+          }
+        },
+        error: (err) => {
+          console.error('ERROR al obtener el producto principal:', err);
+        }
+      });
+    }
+  });
+}
 
   ngAfterViewInit(): void {
 
@@ -67,7 +76,6 @@ export class ArticuloComponent implements AfterViewInit, OnInit {
       asNavFor: '#product-imgs',
     });
 
-    
     $('#product-imgs').slick({
       slidesToShow: 3,
       slidesToScroll: 1,

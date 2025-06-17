@@ -1,0 +1,49 @@
+<div class="section">
+    <div class="container">
+      <div class="row">
+  
+        <div class="col-md-12">
+          <div class="section-title">
+            <h3 class="title">Resultados para: "{{ searchQuery }}"</h3>
+          </div>
+        </div>
+  
+        <div class="col-md-12 text-center" *ngIf="products.length === 0">
+          <p>No se encontraron productos que coincidan con tu búsqueda.</p>
+          <a routerLink="/" class="primary-btn">Volver al Inicio</a>
+        </div>
+  
+        <ng-container *ngIf="products.length > 0">
+          <div class="col-md-4 col-xs-6" *ngFor="let p of products">
+            <div class="product">
+              <div class="product-img">
+                <a [routerLink]="['/articulos', p.id_producto]">
+                  <img [src]="p.imagen" alt="{{p.nombre_producto}}">
+                </a>
+              </div>
+              <div class="product-body">
+                <p class="product-category">{{ p.categoria }}</p>
+                <h3 class="product-name">
+                  <a [routerLink]="['/articulos', p.id_producto]">{{ p.nombre_producto }}</a>
+                </h3>
+                <h4 class="product-price">{{ p.precio | currency:'CLP' }}</h4>
+                <div class="product-rating">
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star"></i>
+                  <i class="fa fa-star-o"></i>
+                </div>
+              </div>
+              <div class="add-to-cart">
+                <button class="add-to-cart-btn" [routerLink]="['/articulos', p.id_producto]">
+                  <i class="fa fa-shopping-cart"></i> Ver Detalles
+                </button>
+              </div>
+            </div>
+          </div>
+          </ng-container>
+  
+      </div>
+      </div>
+    </div>

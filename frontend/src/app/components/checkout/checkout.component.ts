@@ -7,7 +7,8 @@ import {NgxSpinnerModule, NgxSpinnerService} from "ngx-spinner";
 import {FormBuilder, NgForm, Validators} from "@angular/forms";
 import { CommonModule } from '@angular/common';
 import { ArticuloModelServer } from '../../models/articulo.model';
-
+import { UserService } from '../../services/user.service';
+import { SocialUser } from '@abacritt/angularx-social-login';
 @Component({
   selector: 'app-checkout',
   standalone:true,
@@ -21,9 +22,12 @@ export class CheckoutComponent implements OnInit {
   cartTotal!: number;
   showSpinner!: Boolean;
   checkoutForm: any;
+  private userId: number | undefined;
+
   constructor(private cartService: CartService,
               private orderService: OrderService,
               private router: Router,
+              private userService:UserService,
               private  spinner: NgxSpinnerService,
               private fb: FormBuilder) {
 
@@ -41,18 +45,32 @@ export class CheckoutComponent implements OnInit {
   ngOnInit() {
     this.cartService.cartDataObs$.subscribe(data => this.cartData = data);
     this.cartService.cartTotal$.subscribe(total => this.cartTotal = total);
-
+    // --- PASO 3: Obtenemos el ID del usuario actual al cargar el componente ---
+    this.userService.userData$.subscribe(data => {
+      // 'data' puede ser de tipo SocialUser (Google) o ResponseModel (tu backend)
+      if (data) {
+        // Verificamos si tiene la propiedad 'id' (de SocialUser) o 'userId' (de tu ResponseModel)
+        this.userId = (data as SocialUser).id ? Number((data as SocialUser).id) : (data as any).userId;
+      }
+    });
   }
 
   onCheckout() {
-   this.spinner.show().then(p => {
-      this.cartService.CheckoutFromCart(204340056);
+    if (!this.userId) {
+      console.error("No se puede hacer checkout: ID de usuario no encontrado.");
+      return;
+    }
+
+    this.spinner.show().then(p => {
+      // --- PASO 4: Usamos el ID del usuario actual, no uno fijo ---
+      this.cartService.CheckoutFromCart(this.userId!);
     });
+  }
     
 
 
 
-  }
+
 
 // Esta función calcula el subtotal de forma segura
 calculateSubtotal(precio: string, cantidad: number): number {
