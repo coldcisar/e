@@ -49,7 +49,40 @@ router.get('/', function (req, res) {
         }).catch(err => console.log(err));
 });
 
+router.get('/search/:query', (req, res) => {
+    // Obtenemos el término de búsqueda de los parámetros de la URL
+    const searchTerm = req.params.query;
 
+    database.table('articulos as a')
+        .join([{
+            table: 'categorias as c',
+            on: 'c.id_categoria = a.tipo_producto'
+        }])
+        .withFields(['c.nombre_categoria as categoria',
+            'a.id_producto',
+            'a.nombre_producto',
+            'a.descripcion',
+            'a.imagen',
+            'a.precio',
+            'a.cantidad'
+        ])
+        .filter({
+            // Buscamos coincidencias parciales en el nombre Y en la descripción
+            $or: [
+                { nombre_producto: { $like: `%${searchTerm}%` } },
+                { descripcion: { $like: `%${searchTerm}%` } }
+            ]
+        })
+        .getAll()
+        .then(arts => {
+            if (arts.length > 0) {
+                res.status(200).json(arts);
+            } else {
+                // Es mejor devolver un array vacío que un mensaje de error
+                res.json([]); 
+            }
+        }).catch(err => res.status(500).json(err));
+});
 router.get('/:id', (req, res) => {
     let articuloId = req.params.id; // Obtenemos el ID de la URL
 
@@ -77,26 +110,28 @@ router.get('/:id', (req, res) => {
         }).catch(err => res.status(500).json(err));
 });
 
-/* OBTENER ARTÍCULOS POR CATEGORÍA */
-router.get('/categoria/:nombreCat', (req, res) => {
-    const cat_nombre = req.params.nombreCat;
+//* OBTENER ARTÍCULOS POR CATEGORÍA (MEJORADO) */
+router.get('/categoria/:catName', (req, res) => {
+    const { catName } = req.params;
+    const { exclude } = req.query; // Obtenemos el ID a excluir de los parámetros de consulta (ej: ?exclude=1)
+    const limit = 4; // Mostraremos un máximo de 4 productos relacionados
+
     database.table('articulos as a')
-        .join([{
-            table: 'categorias as c',
-            on: 'c.id_categoria = a.tipo_producto'
-        }])
-        .filter({'c.nombre_categoria': { $like: `%${cat_nombre}%` }}) // Forma más segura de filtrar
+        .join([{ table: 'categorias as c', on: 'c.id_categoria = a.tipo_producto' }])
+        .withFields(['c.nombre_categoria as categoria', 'a.id_producto', 'a.nombre_producto', 'a.descripcion', 'a.imagen', 'a.precio', 'a.cantidad'])
+        .filter({ 'c.nombre_categoria': catName }) // Forma correcta y segura de filtrar
         .getAll()
-        .then(arts => {
-            if (arts.length > 0) {
-                res.status(200).json({
-                    count: arts.length,
-                    articulos: arts
-                });
+        .then(prods => {
+            if (prods.length > 0) {
+                // Si se proporcionó un ID para excluir, filtramos ese producto del array
+                const finalProducts = exclude ? prods.filter(p => p.id_producto.toString() !== exclude) : prods;
+                
+                // Devolvemos solo la cantidad definida por 'limit'
+                res.status(200).json(finalProducts.slice(0, limit));
             } else {
-                res.json({ message: `No se encontraron artículos en la categoría ${cat_nombre}` })
+                res.json([]); // Si no hay productos, devolvemos un array vacío
             }
-        }).catch(err => console.log(err));
+        }).catch(err => res.status(500).json(err));
 });
 
 

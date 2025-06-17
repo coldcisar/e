@@ -22,27 +22,35 @@ router.get('/', (req, res) => {
         }).catch(err => res.json(err));
 });
 
-// OBTENER UNA SOLA ORDEN
-router.get('/:id', async (req, res) => {
+router.get('/:id', (req, res) => {
     let order_id = req.params.id;
+
     database.table('ordenes_detalles as od')
         .join([
-            { table: 'ordenes as o', on: 'o.order_id = od.order_id' },
-            { table: 'articulos as a', on: 'a.id_producto = od.articulo_id' },
-            { table: 'user as u', on: 'u.user_id = o.id_comprador' }
+            {
+                table: 'ordenes as o',
+                on: 'o.order_id = od.order_id'
+            },
+            {
+                table: 'articulos as a',
+                on: 'a.id_producto = od.articulo_id'
+            },
+            {
+                table: 'user as u',
+                on: 'u.id = o.id_comprador'
+            }
         ])
         .withFields(['o.order_id', 'a.nombre_producto', 'a.descripcion', 'a.precio', 'a.imagen', 'od.cantidad as cantidadOrdenada'])
         .filter({ 'o.order_id': order_id })
         .getAll()
         .then(ordenes => {
             if (ordenes.length > 0) {
-                res.json(ordenes);
+                res.status(200).json(ordenes);
             } else {
-                res.json({ message: "No se encontraron órdenes" });
+                res.status(404).json({ message: "No se encontraron detalles para esa orden" });
             }
-        }).catch(err => res.json(err));
+        }).catch(err => res.status(500).json(err));
 });
-
 // CREAR UNA NUEVA ORDEN
 router.post('/nuevo', async (req, res) => {
     let { userId, articulos } = req.body;
